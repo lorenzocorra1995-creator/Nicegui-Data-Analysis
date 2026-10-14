@@ -5,11 +5,12 @@ Avvio:
     python app.py                       # poi carichi i file dall'interfaccia
     python app.py vendite.parquet clienti.csv
     python app.py --port 8123 vendite.parquet
+    python app.py --help
 """
 from __future__ import annotations
 
+import argparse
 import json
-import sys
 from pathlib import Path
 
 import numpy as np
@@ -613,13 +614,12 @@ selettore: ui.select
 
 
 def main() -> None:
-    args = sys.argv[1:]
-    port = 8090
-    if "--port" in args:
-        i = args.index("--port")
-        port = int(args[i + 1])
-        del args[i:i + 2]
-    for arg in args:
+    parser = argparse.ArgumentParser(description="Data Explorer — analisi dati locale")
+    parser.add_argument("files", nargs="*", help="file da caricare all'avvio (csv, xlsx, parquet, pkl, feather)")
+    parser.add_argument("--port", type=int, default=8090, help="porta del server web (predefinita: 8090)")
+    parser.add_argument("--no-browser", action="store_true", help="non aprire il browser all'avvio")
+    args = parser.parse_args()
+    for arg in args.files:
         try:
             p = Path(arg)
             S.aggiungi(p.stem, eng.load_file(p))
@@ -627,7 +627,7 @@ def main() -> None:
         except Exception as e:  # noqa: BLE001
             print(f"Impossibile caricare {arg}: {e}")
     ui.page("/")(pagina)
-    ui.run(title="Data Explorer", reload=False, show=True, port=port, favicon="📊")
+    ui.run(title="Data Explorer", reload=False, show=not args.no_browser, port=args.port, favicon="📊")
 
 
 if __name__ in {"__main__", "__mp_main__"}:

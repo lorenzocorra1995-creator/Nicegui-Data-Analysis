@@ -17,7 +17,7 @@ from pathlib import Path
 
 import pandas as pd
 
-_AQUI = Path(__file__).resolve().parent
+_QUI = Path(__file__).resolve().parent
 
 
 def esplora(*args: pd.DataFrame, porta: int = 8090, **dataset: pd.DataFrame) -> subprocess.Popen:
@@ -39,4 +39,4 @@ def esplora(*args: pd.DataFrame, porta: int = 8090, **dataset: pd.DataFrame) -> 
             d.to_pickle(p)
         percorsi.append(str(p))
 
-    return subprocess.Popen([sys.executable, str(_AQUI / "app.py"), "--port", str(porta), *percorsi])
+    return subprocess.Popen([sys.executable, str(_QUI / "app.py"), "--port", str(porta), *percorsi])

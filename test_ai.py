@@ -77,3 +77,19 @@ def test_default_effort_is_omitted(monkeypatch, df):
     ai.generate_code("k", "x", "SQL", {"df": df})
     assert sent["model"] == ai.DEFAULT_MODEL
     assert "output_config" not in sent
+
+
+@pytest.mark.parametrize("stop_reason, message", [("refusal", "rifiutato"), ("max_tokens", "troppo lunga")])
+def test_incomplete_responses_give_clear_errors(monkeypatch, df, stop_reason, message):
+    class FakeMessages:
+        def create(self, **kwargs):
+            block = type("Block", (), {"type": "text", "text": ""})()
+            return type("Response", (), {"content": [block], "stop_reason": stop_reason})()
+
+    class FakeClient:
+        def __init__(self, api_key):
+            self.messages = FakeMessages()
+
+    monkeypatch.setattr(anthropic, "Anthropic", FakeClient)
+    with pytest.raises(ValueError, match=message):
+        ai.generate_code("k", "x", "SQL", {"df": df})

@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Ambienti virtuali
+.venv/
+venv/
+env/
+
+# NiceGUI (stato locale)
+.nicegui/
+
+# IDE / sistema
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Dati locali (non versionare i dataset)
+*.parquet
+*.pkl
+*.xlsx
+*.csv

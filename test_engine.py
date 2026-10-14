@@ -34,6 +34,10 @@ def test_filter_operators(df, condition, expected_mask):
     assert len(e.apply_filters(df, group(condition))) == expected_mask(df).sum()
 
 
+def test_invalid_regex_matches_nothing(df):
+    assert e.apply_filters(df, group(cond("regione", "regex", "(["))).empty
+
+
 def test_incomplete_conditions_are_ignored(df):
     tree = group(cond("importo", ">", ""), group(logic="OR"))
     assert len(e.apply_filters(df, tree)) == len(df)
@@ -56,6 +60,11 @@ def test_new_aggregations(df):
     fns = ("q1", "q3", "moda", "range", "% nulli", "varianza", "nulli")
     out = e.run_groupby(df, ["regione"], [{"col": "importo", "fn": fn} for fn in fns])
     assert out.shape == (3, len(fns) + 1)
+
+
+def test_first_last_without_keys(df):
+    out = e.run_groupby(df, [], [{"col": "note", "fn": "primo"}, {"col": "note", "fn": "ultimo"}])
+    assert out.iloc[0].tolist() == [df.note.dropna().iloc[0], df.note.dropna().iloc[-1]]
 
 
 def test_value_counts_percent(df):

@@ -108,6 +108,11 @@ def generate_code(api_key: str, request: str, language: str, tables: dict[str, p
         messages=[{"role": "user", "content": build_prompt(request, language, tables)}],
         **options,
     )
+    stop_reason = getattr(response, "stop_reason", None)
+    if stop_reason == "refusal":
+        raise ValueError("Claude ha rifiutato la richiesta: riformulala.")
+    if stop_reason == "max_tokens":
+        raise ValueError("Risposta troppo lunga e quindi incompleta: semplifica la richiesta o riduci lo sforzo.")
     text = "".join(block.text for block in response.content if block.type == "text")
     code = clean_code(text)
     validate_code(code, language)

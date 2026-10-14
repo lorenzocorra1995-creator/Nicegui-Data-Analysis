@@ -119,9 +119,10 @@ def _mask_condizione(df: pd.DataFrame, c: dict) -> pd.Series | None:
         return st.str.lower().str.endswith(str(val).lower(), na=False)
     if op == "regex":
         try:
-            return st.str.contains(str(val), regex=True, na=False)
+            re.compile(str(val))  # con i dtype stringa di pandas 3 l'errore arriverebbe da pyarrow
         except re.error:
             return vuoto
+        return st.str.contains(str(val), regex=True, na=False)
     if op in ("in lista", "non in lista"):
         valori = _split_list(val)
         m = st.isin(valori)
@@ -250,7 +251,10 @@ def run_groupby(df: pd.DataFrame, by: list[str], aggs: list[dict],
     if by:
         out = d.groupby(by, dropna=False, sort=ordina).agg(**named).reset_index()
     else:
-        res = {n: [d[na.column].agg(na.aggfunc)] for n, na in named.items()}
+        # "first"/"last" esistono solo per groupby: senza chiavi si usa il primo/ultimo non nullo
+        senza_gruppi = {"first": lambda s: s.dropna().iloc[0] if s.notna().any() else None,
+                        "last": lambda s: s.dropna().iloc[-1] if s.notna().any() else None}
+        res = {n: [d[na.column].agg(senza_gruppi.get(na.aggfunc, na.aggfunc))] for n, na in named.items()}
         out = pd.DataFrame(res)
     return out
 
