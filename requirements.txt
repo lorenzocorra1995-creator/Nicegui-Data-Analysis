@@ -1,0 +1,7 @@
+nicegui>=3.14
+pandas>=2.0
+numpy
+duckdb
+openpyxl
+pyarrow
+anthropic
