@@ -18,6 +18,15 @@ With Data Explorer you can, all in the same application:
 - save datasets in a local database organised into projects and folders;
 - use SQL or Python for anything the buttons don't cover, with an optional AI assistant.
 
+<table>
+<tr>
+<td width="50%"><img src="docs/screenshots/10_console/02_dashboard.png" alt="Interactive dashboard built in the Console, light theme"></td>
+<td width="50%"><img src="docs/screenshots/10_console/03_dashboard_scura.png" alt="The same dashboard in the dark theme"></td>
+</tr>
+</table>
+
+*An interactive dashboard built in the Console with a few lines of Python, in light and dark theme.*
+
 ---
 
 ## Contents
@@ -221,6 +230,8 @@ At the top is the **Database** button. Below it, the sections in four groups:
 
 On narrow screens the menu closes by itself after each choice.
 
+![Main screen: side menu, Data section and the dataset table](docs/screenshots/01_dati/01_tabella.png)
+
 **Work area**
 
 Fills the rest of the page and shows the chosen section. Each section is made of **work panels** (see below).
@@ -254,6 +265,8 @@ Tips:
 - With «in list» and «not in list», the clipboard-icon button lets you paste a list copied from Excel (one cell per row, or values separated by `;`).
 - Numbers accept both `1.234,56` and `1,234.56`; dates are written `YYYY-MM-DD`.
 - In **Group By**, **Pivot**, **Charts**, **Statistics** and **Console**, filters are applied **before** the calculation.
+
+![The filter builder with conditions and AND / OR groups](docs/screenshots/01_dati/02_filtri.png)
 
 ### Results
 
@@ -304,6 +317,8 @@ To tidy up the dataset:
 
 Click **Anteprima** (Preview) to see the result and **Applica al dataset** (Apply to dataset) to confirm. **Annulla ultima modifica** (Undo last change) restores the dataset to its previous state (the version before the last change is kept).
 
+![Structure section: rename and reorder columns, sort rows](docs/screenshots/02_struttura/01_colonne_e_ordinamento.png)
+
 ### Colonne calcolate (Computed columns)
 
 Create a new column, or overwrite an existing one, in three ways:
@@ -315,6 +330,8 @@ Create a new column, or overwrite an existing one, in three ways:
 | **Se… allora** (If… then) | Assigns a value based on rules, each with its own filters («if Region = Lombardia then North»), plus an «otherwise» value. |
 
 Choose where to insert the new column (after which column), check the preview (**Anteprima**) and click **Applica al dataset** (Apply to dataset).
+
+![Computed columns: a formula with the function guide](docs/screenshots/03_colonne_calcolate/01_formula.png)
 
 ### Join / Union
 
@@ -332,6 +349,8 @@ A switch at the top chooses between **Join** and **Union**.
 Options let you match keys of different types «as text», treat empty values as equal, add a column indicating which side each row comes from, and merge identical keys into a single column.
 
 To avoid freezing your computer, if the keys have repeated values on both sides and the result would explode in size, the join stops with a message explaining why.
+
+![Join between two datasets with key and result-column selection](docs/screenshots/04_join_union/01_join.png)
 
 **Union** (stack tables with the same columns)
 
@@ -351,6 +370,15 @@ Groups rows and computes summaries.
 
 At the top a switch chooses between **Aggregazioni** (Aggregations, as described above) and **Value counts**, which counts how often each value of the chosen columns appears, with the percentage, for each group.
 
+![Group By with several measures](docs/screenshots/05_group_by/01_aggregazioni.png)
+
+<details>
+<summary>Value counts</summary>
+
+![Value counts with percentages per group](docs/screenshots/05_group_by/02_value_counts.png)
+
+</details>
+
 ### Pivot
 
 A pivot table like Excel's, with more options.
@@ -363,6 +391,15 @@ A pivot table like Excel's, with more options.
 6. Click **Crea Pivot** (Create Pivot).
 
 Clicking a cell and then **Righe di origine** (Source rows) shows exactly the dataset rows that produced that number. If the pivot would have too many columns (over 500), the program says so and suggests filtering or moving a field to the rows.
+
+![Pivot: categories in rows and channels in columns](docs/screenshots/06_pivot/01_categoria_per_canale.png)
+
+<details>
+<summary>Another pivot: category by year</summary>
+
+![Pivot with dates grouped by year](docs/screenshots/06_pivot/02_categoria_per_anno.png)
+
+</details>
 
 ### Grafici (Charts)
 
@@ -385,6 +422,21 @@ In the **Costruzione del grafico** (Chart builder) panel:
 
 **Click a bar, slice or point** to see the dataset rows behind it. The chart's data table is in the panel below.
 
+![Building a stacked bar chart](docs/screenshots/07_grafici/01_barre_in_pila.png)
+
+<details>
+<summary>More chart examples</summary>
+
+![Line chart](docs/screenshots/07_grafici/02_linee.png)
+
+![Treemap](docs/screenshots/07_grafici/03_treemap.png)
+
+![Pareto chart](docs/screenshots/07_grafici/04_pareto.png)
+
+![Box plot](docs/screenshots/07_grafici/05_box_plot.png)
+
+</details>
+
 At the top you can also use **Costruisci il grafico con l'AI** (Build the chart with AI): describe the chart you want and the assistant fills in the controls for you (requires an API key, [section 11](#11-ai-assistant-optional)).
 
 ### Statistica (Statistics)
@@ -400,6 +452,15 @@ Choose an analysis and the columns involved, then click **Calcola** (Calculate).
 
 Each analysis only shows the fields it needs (for example the confidence level, the correlation method or the time unit).
 
+![Descriptive statistics](docs/screenshots/08_statistica/01_descrittive.png)
+
+<details>
+<summary>Correlations</summary>
+
+![Correlation matrix](docs/screenshots/08_statistica/02_correlazioni.png)
+
+</details>
+
 ### Excel
 
 Generates formatted Excel files. A switch chooses between **Split** and **Report**.
@@ -410,6 +471,8 @@ Generates formatted Excel files. A switch chooses between **Split** and **Report
 - *By number of rows*: blocks of N rows, each in a file or sheet.
 
 Names are built with placeholders such as `{Regione}`, `{n}` and `{nome}`. The **Anteprima** (Preview) button shows the plan (how many files, which names, how many rows) before anything is created; **Genera file** (Generate files) creates them. Limits: at most 1,000 files and 250 sheets per file.
+
+![Splitting a dataset into several Excel files, with a plan preview](docs/screenshots/09_excel/01_split.png)
 
 **Report** gathers several tables you produced in the other sections into a single Excel file. From any result use **Esporta e salva → Aggiungi al report** (Export and save → Add to report), choosing a sheet name and title; then in Report you can reorder, rename and remove sheets and click **Genera report** (Generate report).
 
@@ -423,6 +486,8 @@ For anything the buttons don't cover. A switch chooses **SQL** or **Python**; `C
 
 - Every loaded dataset is a table with its own name.
 - `df` is the panel's dataset.
+
+![SQL Console with the query result](docs/screenshots/10_console/01_sql.png)
 
 **Python**
 

@@ -16,6 +16,15 @@ Con Data Explorer puoi, tutto nella stessa applicazione:
 - salvare i dataset in un database locale organizzato in progetti e cartelle;
 - usare SQL o Python per tutto ciò che non è coperto dai pulsanti, con un assistente AI facoltativo.
 
+<table>
+<tr>
+<td width="50%"><img src="docs/screenshots/10_console/02_dashboard.png" alt="Dashboard interattiva creata dalla Console, tema chiaro"></td>
+<td width="50%"><img src="docs/screenshots/10_console/03_dashboard_scura.png" alt="La stessa dashboard con il tema scuro"></td>
+</tr>
+</table>
+
+*Una dashboard interattiva costruita dalla Console con poche righe di Python, in tema chiaro e scuro.*
+
 ---
 
 ## Indice
@@ -219,6 +228,8 @@ In cima il pulsante **Database**. Sotto, le sezioni in quattro gruppi:
 
 Sui monitor stretti il menu si chiude da solo dopo ogni scelta.
 
+![La schermata principale: menu laterale, sezione Dati e tabella del dataset](docs/screenshots/01_dati/01_tabella.png)
+
 **Area di lavoro**
 
 Occupa il resto della pagina e mostra la sezione scelta. Ogni sezione è composta da **finestre di lavoro** (vedi sotto).
@@ -252,6 +263,8 @@ Suggerimenti:
 - Con «in lista» e «non in lista» il pulsante con l'icona degli appunti permette di incollare un elenco copiato da Excel (una cella per riga, oppure valori separati da `;`).
 - I numeri accettano sia `1.234,56` sia `1,234.56`; le date si scrivono `AAAA-MM-GG`.
 - In **Group By**, **Pivot**, **Grafici**, **Statistica** e **Console** i filtri vengono applicati **prima** del calcolo.
+
+![Il costruttore di filtri con condizioni e gruppi AND / OR](docs/screenshots/01_dati/02_filtri.png)
 
 ### Risultati
 
@@ -302,6 +315,8 @@ Per sistemare il dataset:
 
 Premi **Anteprima** per vedere il risultato e **Applica al dataset** per confermare. **Annulla ultima modifica** riporta il dataset allo stato precedente (la versione prima dell'ultima modifica è conservata).
 
+![Sezione Struttura: rinomina, riordina le colonne e ordina le righe](docs/screenshots/02_struttura/01_colonne_e_ordinamento.png)
+
 ### Colonne calcolate
 
 Crea una nuova colonna, oppure sovrascrivi una esistente, in tre modi:
@@ -313,6 +328,8 @@ Crea una nuova colonna, oppure sovrascrivi una esistente, in tre modi:
 | **Se… allora** | Assegna un valore in base a regole, ognuna con i propri filtri («se Regione = Lombardia allora Nord»), più un valore «altrimenti». |
 
 Scegli dove inserire la nuova colonna (dopo quale colonna), controlla l'anteprima (**Anteprima**) e premi **Applica al dataset**.
+
+![Colonne calcolate: una formula con la guida alle funzioni](docs/screenshots/03_colonne_calcolate/01_formula.png)
 
 ### Join / Union
 
@@ -330,6 +347,8 @@ Un interruttore in alto sceglie tra **Join** e **Union**.
 Le opzioni permettono di far corrispondere anche chiavi di tipo diverso «come testo», trattare i valori vuoti come uguali, aggiungere una colonna che indica da quale lato viene la riga e fondere le chiavi uguali in un'unica colonna.
 
 Per evitare di bloccare il computer, se le chiavi hanno valori ripetuti da entrambe le parti e il risultato esploderebbe di dimensione, il join si ferma con un messaggio che lo spiega.
+
+![Join tra due dataset con scelta delle chiavi e delle colonne del risultato](docs/screenshots/04_join_union/01_join.png)
 
 **Union** (impilare tabelle con le stesse colonne)
 
@@ -349,6 +368,15 @@ Raggruppa le righe e calcola riepiloghi.
 
 In alto un interruttore sceglie tra **Aggregazioni** (quanto descritto sopra) e **Value counts**, che conta quante volte compare ogni valore delle colonne scelte, con la percentuale, per ogni gruppo.
 
+![Group By con più misure](docs/screenshots/05_group_by/01_aggregazioni.png)
+
+<details>
+<summary>Value counts</summary>
+
+![Value counts con percentuali per gruppo](docs/screenshots/05_group_by/02_value_counts.png)
+
+</details>
+
 ### Pivot
 
 Una tabella pivot come quella di Excel, ma con più possibilità.
@@ -361,6 +389,15 @@ Una tabella pivot come quella di Excel, ma con più possibilità.
 6. Premi **Crea Pivot**.
 
 Cliccando su una cella e poi su **Righe di origine** vedi esattamente le righe del dataset che hanno prodotto quel numero. Se la pivot avesse troppe colonne (oltre 500) il programma lo segnala e suggerisce di filtrare o di spostare un campo nelle righe.
+
+![Pivot: categorie nelle righe e canali nelle colonne](docs/screenshots/06_pivot/01_categoria_per_canale.png)
+
+<details>
+<summary>Un'altra pivot: categoria per anno</summary>
+
+![Pivot con le date raggruppate per anno](docs/screenshots/06_pivot/02_categoria_per_anno.png)
+
+</details>
 
 ### Grafici
 
@@ -383,6 +420,21 @@ Nel riquadro **Costruzione del grafico**:
 
 **Clicca su una barra, una fetta o un punto** per vedere le righe del dataset che lo compongono. La tabella dei dati del grafico è nel riquadro sotto.
 
+![Costruzione di un grafico a barre in pila](docs/screenshots/07_grafici/01_barre_in_pila.png)
+
+<details>
+<summary>Altri esempi di grafici</summary>
+
+![Grafico a linee](docs/screenshots/07_grafici/02_linee.png)
+
+![Treemap](docs/screenshots/07_grafici/03_treemap.png)
+
+![Grafico di Pareto](docs/screenshots/07_grafici/04_pareto.png)
+
+![Box plot](docs/screenshots/07_grafici/05_box_plot.png)
+
+</details>
+
 In alto puoi anche usare **Costruisci il grafico con l'AI**: descrivi in italiano il grafico che vuoi e l'assistente compila i controlli per te (serve la chiave API, [sezione 11](#11-assistente-ai-facoltativo)).
 
 ### Statistica
@@ -398,6 +450,15 @@ Scegli un'analisi, le colonne coinvolte e premi **Calcola**. I risultati sono ta
 
 Ogni analisi mostra solo i campi che le servono (per esempio il livello di confidenza, il metodo di correlazione o l'unità di tempo).
 
+![Statistiche descrittive](docs/screenshots/08_statistica/01_descrittive.png)
+
+<details>
+<summary>Correlazioni</summary>
+
+![Matrice delle correlazioni](docs/screenshots/08_statistica/02_correlazioni.png)
+
+</details>
+
 ### Excel
 
 Genera file Excel formattati. Un interruttore sceglie tra **Split** e **Report**.
@@ -408,6 +469,8 @@ Genera file Excel formattati. Un interruttore sceglie tra **Split** e **Report**
 - *Per numero di righe*: blocchi di N righe, ciascuno in un file o in un foglio.
 
 I nomi si compongono con segnaposto come `{Regione}`, `{n}` e `{nome}`. Il pulsante **Anteprima** mostra il piano (quanti file, quali nomi, quante righe) prima di creare qualsiasi cosa; **Genera file** li crea. Limiti: massimo 1.000 file e 250 fogli per file.
+
+![Split di un dataset in più file Excel, con anteprima del piano](docs/screenshots/09_excel/01_split.png)
 
 **Report** raccoglie in un solo file Excel più tabelle che hai prodotto nelle altre sezioni. Da qualsiasi risultato usa **Esporta e salva → Aggiungi al report**, scegliendo nome del foglio e titolo; poi in Report puoi riordinare, rinominare e togliere i fogli e premere **Genera report**.
 
@@ -421,6 +484,8 @@ Per quello che non è coperto dai pulsanti. Un interruttore sceglie **SQL** o **
 
 - Ogni dataset caricato è una tabella con il suo nome.
 - `df` è il dataset della finestra.
+
+![Console SQL con il risultato della query](docs/screenshots/10_console/01_sql.png)
 
 **Python**
 
