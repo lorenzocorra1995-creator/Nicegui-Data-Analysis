@@ -1,5 +1,7 @@
 # Data Explorer
 
+**Italiano** · [English](README.en.md)
+
 Strumento **locale** per esplorare e analizzare dati tabellari (CSV, Excel, Parquet…) direttamente dal browser, senza scrivere codice e senza inviare i tuoi dati a nessun servizio esterno.
 
 Costruito con Python, [NiceGUI](https://nicegui.io), pandas, DuckDB e ECharts. Interfaccia e messaggi sono in italiano.
@@ -32,6 +34,7 @@ Con Data Explorer puoi, tutto nella stessa applicazione:
 12. [Opzioni di avvio avanzate](#12-opzioni-di-avvio-avanzate)
 13. [Problemi frequenti](#13-problemi-frequenti)
 14. [Per chi sviluppa](#14-per-chi-sviluppa)
+15. [Licenza](#15-licenza)
 
 ---
 
@@ -624,3 +627,9 @@ I test dell'interfaccia usano il simulatore di NiceGUI (`nicegui.testing.user_pl
 - Nessun codice ridondante: prima di scrivere un helper, controllare che non esista già.
 - Il codice è organizzato per argomenti: funzioni, logiche e architettura separate.
 - Restano in italiano solo i testi visibili all'utente e alcune chiavi salvate o scambiate (descritte in `PROJECT_MAP.md`).
+
+---
+
+## 15. Licenza
+
+Distribuito con licenza **MIT**: puoi usare, copiare, modificare e ridistribuire il codice, anche per scopi commerciali, purché mantieni l'avviso di copyright. Il testo completo è nel file [LICENSE](LICENSE).
