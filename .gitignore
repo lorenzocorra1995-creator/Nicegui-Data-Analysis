@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Ambienti virtuali
+NiceGuiApp/
+.venv/
+venv/
+
+# Dati e file generati dall'app
+data/
+logs/
+.nicegui/
+
+# Eseguibile generato da tools/build_exe.ps1
+*.exe

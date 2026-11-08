@@ -1,0 +1,11 @@
+nicegui>=3.14
+pandas>=2.2
+numpy
+duckdb
+openpyxl
+pyarrow
+anthropic
+scipy
+statsmodels
+xlsxwriter
+pywin32; sys_platform == "win32"
