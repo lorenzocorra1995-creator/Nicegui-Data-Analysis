@@ -1,8 +1,8 @@
 """
-Generazione di codice con Claude (nessuna dipendenza da UI).
+Code generation with Claude (no UI dependency).
 
-Privacy: all'API vengono inviati SOLO la richiesta dell'utente e i metadati
-(nome tabella, nome colonna, tipo). Nessun valore dei dati lascia il computer.
+Privacy: the API receives ONLY the user's request and the metadata
+(table name, column name, type). No data value leaves the computer.
 """
 from __future__ import annotations
 
@@ -31,7 +31,7 @@ EFFORTS = {
 }
 DEFAULT_EFFORT = "auto"
 
-MAX_TOKENS = 16000  # il ragionamento conta nei token: lascia spazio anche con sforzo alto
+MAX_TOKENS = 16000  # reasoning counts toward the tokens: leave room even with high effort
 
 RULES = {
     "SQL": (
@@ -44,7 +44,12 @@ RULES = {
         "pd, np, and sql('SELECT ...') which runs DuckDB SQL on the tables. "
         "The last expression is displayed to the user (DataFrame or Series become a table), "
         "so end with the object to show instead of using print() on large data. "
-        "Do not read or write files and do not use the network."
+        "To let the user download results use download(df, 'name', fmt='xlsx') for one table "
+        "or download_zip({'name1': df1, 'name2': df2}, 'zip_name', fmt='xlsx') for several files in one zip "
+        "(fmt can be 'xlsx' or 'csv'; no extension in the names). "
+        "To save files on disk use pathlib and pandas (to_excel, to_csv) with an absolute path or the folder the user states, "
+        "creating it with mkdir(parents=True, exist_ok=True). "
+        "Do not read existing files and do not use the network."
     ),
 }
 
@@ -60,7 +65,7 @@ SYSTEM_PROMPT = (
 
 
 def describe_tables(tables: dict[str, pd.DataFrame]) -> str:
-    """Metadati in testo: una riga per tabella con 'colonna (tipo)'."""
+    """Metadata as text: one line per table with 'column (type)'."""
     lines = []
     for name, table in tables.items():
         columns = ", ".join(f"{col} ({dtype})" for col, dtype in table.dtypes.items())
@@ -78,13 +83,13 @@ def build_prompt(request: str, language: str, tables: dict[str, pd.DataFrame]) -
 
 
 def clean_code(text: str) -> str:
-    """Estrae solo il contenuto del primo blocco ```...```; senza blocco usa tutto il testo."""
+    """Extracts only the content of the first ```...``` block; without a block it uses the whole text."""
     match = re.search(r"```(?:\w+)?\n(.*?)```", text, re.DOTALL)
     return (match.group(1) if match else text).strip()
 
 
 def validate_code(code: str, language: str) -> None:
-    """Controlla (senza eseguire) che il testo sia codice sintatticamente valido."""
+    """Checks (without running it) that the text is syntactically valid code."""
     try:
         if not code:
             raise ValueError("risposta vuota")
@@ -97,18 +102,22 @@ def validate_code(code: str, language: str) -> None:
         raise ValueError("La risposta dell'AI non è codice valido: riprova o riformula la richiesta.") from error
 
 
-def generate_code(api_key: str, request: str, language: str, tables: dict[str, pd.DataFrame],
-                  model: str = DEFAULT_MODEL, effort: str = DEFAULT_EFFORT) -> str:
+def ask(api_key: str, system: str, prompt: str, model: str = DEFAULT_MODEL, effort: str = DEFAULT_EFFORT) -> str:
+    """One question to Claude: returns the text of the answer."""
     options = {} if effort == DEFAULT_EFFORT else {"output_config": {"effort": effort}}
     client = anthropic.Anthropic(api_key=api_key)
     response = client.messages.create(
         model=model,
         max_tokens=MAX_TOKENS,
-        system=SYSTEM_PROMPT,
-        messages=[{"role": "user", "content": build_prompt(request, language, tables)}],
+        system=system,
+        messages=[{"role": "user", "content": prompt}],
         **options,
     )
-    text = "".join(block.text for block in response.content if block.type == "text")
-    code = clean_code(text)
+    return "".join(block.text for block in response.content if block.type == "text")
+
+
+def generate_code(api_key: str, request: str, language: str, tables: dict[str, pd.DataFrame],
+                  model: str = DEFAULT_MODEL, effort: str = DEFAULT_EFFORT) -> str:
+    code = clean_code(ask(api_key, SYSTEM_PROMPT, build_prompt(request, language, tables), model, effort))
     validate_code(code, language)
     return code

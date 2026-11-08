@@ -1,4 +1,4 @@
-"""Dataset di esempio riproducibile, usato dai test."""
+"""Reproducible sample dataset, used by the tests."""
 import numpy as np
 import pandas as pd
 

@@ -1,8 +1,7 @@
 import anthropic
 import pytest
 
-import ai_assistant as ai
-
+from data_explorer.ai import ai_assistant as ai
 SECRET = "VALORE_RISERVATO_123"
 
 
@@ -12,6 +11,11 @@ def test_prompt_contains_only_metadata(df):
     assert SECRET not in prompt
     assert "regione (" in prompt and "importo (float64)" in prompt
     assert "somma importo per regione" in prompt
+
+
+def test_python_rules_allow_saving_and_downloading(df):
+    prompt = ai.build_prompt("x", "Python", {"df": df})
+    assert "download(" in prompt and "download_zip(" in prompt and "pathlib" in prompt
 
 
 def test_prompt_uses_language_rules(df):
